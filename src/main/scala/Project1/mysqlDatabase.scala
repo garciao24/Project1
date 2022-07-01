@@ -1,6 +1,9 @@
 package Project1
 
+import ujson.IndexedValue.True
+
 import java.sql.{Connection, DriverManager, ResultSet, SQLException, Statement}
+import scala.collection.mutable.ListBuffer
 
 object mysqlDatabase {
 
@@ -47,7 +50,7 @@ object mysqlDatabase {
 
   def showAllUsers(): Unit = {
     connect()
-    val statement = connection.prepareStatement("SELECT DISTINCT USERNAME FROM users")
+    val statement = connection.prepareStatement("SELECT  Firstname, Lastname, Username FROM users")
     try {
       val resultSet = statement.executeQuery()
       println("Users")
@@ -61,14 +64,62 @@ object mysqlDatabase {
 
   def showUser(Username: String): Unit = {
     connect()
+    val statement = connection.prepareStatement(s"SELECT Firstname, Lastname FROM users WHERE Username = '$Username' ")
+    try {
+      val resultSet = statement.executeQuery()
 
+      while (resultSet.next()) {
+        print(resultSet.getString("Firstname"))
+        print(' ')
+        print(resultSet.getString("Lastname"))
+      }
+    } catch {
+      case e: Exception => e.printStackTrace()
+    }
+  }
+
+
+
+  def checkifExists(): Unit = {//(unfinished)keep working on this
+  connect()
+    var bufferL = new ListBuffer[String]()
+
+    val statement = connection.prepareStatement("SELECT Username FROM users")
+    try {
+      val resultSet = statement.executeQuery()
+      while (resultSet.next()) {
+        //println(resultSet.getString("Username"))
+        bufferL += resultSet.getString("Username")
+      }
+      val userList = bufferL.toList
+      println(userList.contains("ogarcia2834"))
+      val x = (userList.contains("ogarcia2834"))
+      println(x)
+
+
+    } catch {
+      case e: Exception => e.printStackTrace()
+    }
 
   }
 
 
-  def updateUsername(newUsersUsername: String, usersUserName: String): Unit = {
-    connect()
 
+
+
+  def updateUsername(Iduser: Int, usersUserName: String): Unit = {
+    connect()
+    val statement = connection.prepareStatement(s"UPDATE users SET Username = '$usersUserName' WHERE iduser = $Iduser")
+
+    try {
+      val resultSet = statement.executeQuery()
+      println("Users")
+      while (resultSet.next()) {
+        println(resultSet.getString("USERNAME"))
+      }
+    } catch {
+      case e: Exception => e.printStackTrace()
+    }
 
   }
 
@@ -104,7 +155,7 @@ object mysqlDatabase {
 
 
 
-  def disconnectFromDB(): Unit = {
+  def disDB(): Unit = {
 
     connection.close()
 
