@@ -26,32 +26,42 @@ object mysqlDatabase {
 
   def createUser(FirstName: String, LastName: String, Username: String, Password: String, AdminPriv: Int): Int = {
     connect()
-    var rsSet = 0
-    var pstmt = connection.prepareStatement(s"Insert into users (Firstname, Lastname, Username, Password, AdminPriv) Values(?, ?, ?, ?, ?)")
+    var resultSet = 0
+    var statement = connection.prepareStatement(s"Insert into users (Firstname, Lastname, Username, Password, AdminPriv) Values(?, ?, ?, ?, ?)")
     try {
-      pstmt.setString(1, FirstName)
-      pstmt.setString(2, LastName)
-      pstmt.setString(3, Username)
-      pstmt.setString(4, Password)
-      pstmt.setInt(5, AdminPriv)
-      rsSet = pstmt.executeUpdate()
+      statement.setString(1, FirstName)
+      statement.setString(2, LastName)
+      statement.setString(3, Username)
+      statement.setString(4, Password)
+      statement.setInt(5, AdminPriv)
+      resultSet = statement.executeUpdate()
       println("The user account has been created")
       //showAllUsers()
-      rsSet
+      resultSet
     }
     catch {
       case e: SQLException => e.printStackTrace()
-        rsSet
+        resultSet
     }
   }
 
   def showAllUsers(): Unit = {
     connect()
-
+    val statement = connection.prepareStatement("SELECT DISTINCT USERNAME FROM users")
+    try {
+      val resultSet = statement.executeQuery()
+      println("Users")
+      while (resultSet.next()) {
+        println(resultSet.getString("USERNAME"))
+      }
+    } catch {
+      case e: Exception => e.printStackTrace()
+    }
   }
 
-  def showUser(existingUser: String): Unit = {
+  def showUser(Username: String): Unit = {
     connect()
+
 
   }
 
