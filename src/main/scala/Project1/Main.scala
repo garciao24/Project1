@@ -16,28 +16,31 @@ object Main {
     //    result.show()
 
     ///////////
-        val data = requests.get(" https://data.cdc.gov/resource/9bhg-hcku.json")
-        val text = data.text()
-        val json = ujson.read(text)
-        os.write(os.pwd/"api.json",json)//test hdfs figure it out
-
-        val spark = SparkSession
-          .builder()
-          .appName("Hello Hive")
-          .config("spark.master", "local[*]")
-          .enableHiveSupport()
-          .getOrCreate()
-        Logger.getLogger("org").setLevel(Level.ERROR)
-        println("created spark session")
-        val df = spark.read.json(path = "tmp.json")
-        df.show()
+//        val data = requests.get(" https://data.cdc.gov/resource/9bhg-hcku.json")
+//        val text = data.text()
+//        val json = ujson.read(text)
+//        os.write(os.pwd/"api.json",json)//test hdfs figure it out
+//
+//        val spark = SparkSession
+//          .builder()
+//          .appName("Hello Hive")
+//          .config("spark.master", "local[*]")
+//          .enableHiveSupport()
+//          .getOrCreate()
+//        Logger.getLogger("org").setLevel(Level.ERROR)
+//        println("created spark session")
+//        val df = spark.read.json(path = "tmp.json")
+//        df.show()
     ////////////////
 
 
     //mainStartUpMenu()
+    //mysqlDatabase.showUser("ogarcia2834")
 
     //mysqlDatabase.connect()
     //mysqlDatabase.createUser("demo","test","yeahboi","5678",0)
+    mysqlDatabase.checkifExists()
+
   }
 
 
@@ -60,5 +63,33 @@ object Main {
   }
 
 
+  def CreateNewAccount(): Unit = {
+    println("YOu have chosen option 2, create an account to access database")
+    println("This is the beginning of the form you will have ot fill out to create an account.")
+    println("Please enter in your first name")
+    var firstName = scala.io.StdIn.readLine()
+    println("Please enter in your last name")
+    var lastName = scala.io.StdIn.readLine()
+    println("Please enter in your username")
+    var usersUserName = scala.io.StdIn.readLine()
+    println("Please enter in your password")
+    var usersPassword = scala.io.StdIn.readLine()
+    var adminAuth = 0
+
+    ///make something to check it username exists or not
+
+    var newAccount = mysqlDatabase.createUser(firstName, lastName, usersUserName, usersPassword, adminAuth)
+    if (newAccount == 1) {
+      println("You have successfully created an account")
+      mainStartUpMenu()
+    } else (mainStartUpMenu())
+    CreateNewAccount()
+
+
+
+
+
+
+  }
 
 }
