@@ -37,12 +37,13 @@ object Main {
     //mainStartUpMenu()
     //mysqlDatabase.showUser("ogarcia2834")
 
-    //mysqlDatabase.connect()
+
     //mysqlDatabase.createUser("demo","test","yeahboi","5678",0)
-    val stat = mysqlDatabase.checkifExists("ogarrrcia2834")
-    if (stat == 0) {
-      println("User exists please try again")
-    }
+//    var validLogin = mysqlDatabase.validateLogin("ogarcia24","1234")
+//    println(validLogin)
+    login()
+
+
 
   }
 
@@ -95,12 +96,39 @@ object Main {
       mainStartUpMenu()
     } else (mainStartUpMenu())
     CreateNewAccount()
+  }
 
 
 
 
+  def login(): Unit = {
+
+
+    println("Please input user info")
+    println("Please enter username")
+    var username = scala.io.StdIn.readLine()
+    println("Please enter password")
+    var password = scala.io.StdIn.readLine()
+
+    var validLogin = mysqlDatabase.validateLogin(username,password)
+    println(validLogin)
+
+    if(validLogin){
+      println("correct input going to user menu")
+
+      ///if admin = 1
+      //then admin menu
+      //otherwise regular user menu
+
+
+    }
+    else{
+      println("incorrect login info. Try again")
+      login()
+    }
 
 
   }
+
 
 }

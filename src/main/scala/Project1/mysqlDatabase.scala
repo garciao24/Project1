@@ -135,12 +135,12 @@ object mysqlDatabase {
     } catch {
       case e: Exception => e.printStackTrace()
     }
-
-
   }
 
-  def elevateUser2Admin(selectedUser: String): Unit = {
+  def elevateUser2Admin(selectedUser: String): Unit = {//decide whether to use id or unique username
     connect()
+    val statement = connection.prepareStatement(s"UPDATE users SET AdminPriv = '1' WHERE iduser = $selectedUser")
+
   }
 
   def deleteUser(delUser: String): Unit = {
@@ -155,9 +155,27 @@ object mysqlDatabase {
 
   }
 
-//  def validateLogin(usersUserName: String, usersPassword: String): Boolean = {
-//
-//  }
+  def validateLogin(usersUserName: String, usersPassword: String): Boolean = {
+    connect()
+
+    val statement = connection.prepareStatement(s"SELECT * From users WHERE Username = '$usersUserName' AND password = '$usersPassword'")
+    var validUsername = statement.executeQuery()
+
+    try {
+      if (!validUsername.next()) {
+        println("Username and Password are incorrect")
+        print("")
+        false
+
+      } else {
+
+        println("Username and Password are correct.")
+        print("")
+        true
+      }
+
+    }
+  }
 
 //  def checkIsAdmin(usersUserName: String): Int = {
 //
