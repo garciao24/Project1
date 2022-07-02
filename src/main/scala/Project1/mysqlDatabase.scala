@@ -124,6 +124,17 @@ object mysqlDatabase {
 
   def updateName(newFirstName: String, newLastName: String,existingUser : String): Unit = {
     connect()
+    val statement = connection.prepareStatement(s"UPDATE users SET Firstname = '$newFirstName' AND Lastname = '$newLastName'  WHERE Username = $existingUser")
+
+    try {
+      val resultSet = statement.executeQuery()
+      println("Users")
+      while (resultSet.next()) {
+        println(resultSet.getString("USERNAME"))
+      }
+    } catch {
+      case e: Exception => e.printStackTrace()
+    }
 
 
   }
