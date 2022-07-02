@@ -39,9 +39,13 @@ object Main {
 
     //mysqlDatabase.connect()
     //mysqlDatabase.createUser("demo","test","yeahboi","5678",0)
-    mysqlDatabase.checkifExists()
+    val stat = mysqlDatabase.checkifExists("ogarrrcia2834")
+    if (stat == 0) {
+      println("User exists please try again")
+    }
 
   }
+
 
 
   def mainStartUpMenu(): Unit = {
@@ -75,6 +79,13 @@ object Main {
     println("Please enter in your password")
     var usersPassword = scala.io.StdIn.readLine()
     var adminAuth = 0
+
+
+    val stat = mysqlDatabase.checkifExists(usersUserName)
+    if (stat == 0) {
+      println("User exists please try again")
+      //either loop back or return to main menu
+    }
 
     ///make something to check it username exists or not
 

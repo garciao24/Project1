@@ -19,7 +19,7 @@ object mysqlDatabase {
     try {
       Class.forName(driver)
       connection = DriverManager.getConnection(url, username, password)
-      println("it works")
+      println("MySQL CONNECTION IS GOOD")
 
     } catch {
       case e: Exception => e.printStackTrace()
@@ -80,28 +80,25 @@ object mysqlDatabase {
 
 
 
-  def checkifExists(): Unit = {//(unfinished)keep working on this
+  def checkifExists(userCheck: String): Int = {
   connect()
     var bufferL = new ListBuffer[String]()
 
     val statement = connection.prepareStatement("SELECT Username FROM users")
-    try {
-      val resultSet = statement.executeQuery()
-      while (resultSet.next()) {
-        //println(resultSet.getString("Username"))
-        bufferL += resultSet.getString("Username")
-      }
-      val userList = bufferL.toList
-      println(userList.contains("ogarcia2834"))
-      val x = (userList.contains("ogarcia2834"))
-      println(x)
-
-
-    } catch {
-      case e: Exception => e.printStackTrace()
+    val resultSet = statement.executeQuery()
+    while (resultSet.next()) {
+      bufferL += resultSet.getString("Username")
     }
-
+    val userList = bufferL.toList
+    val x = (userList.contains(userCheck))
+    val bol = true
+    if (x == bol) {//user is detected
+      return 0
+    } else {//User is not detected
+      return 1
+    }
   }
+
 
 
 
@@ -125,13 +122,9 @@ object mysqlDatabase {
 
 
 
-  def updateFirstName(newFirstName: String, existingUser: String): Unit = {
+  def updateName(newFirstName: String, newLastName: String,existingUser : String): Unit = {
     connect()
 
-  }
-
-  def updateLastName(newLastName: String, existingUser: String): Unit = {
-    connect()
 
   }
 
@@ -139,9 +132,15 @@ object mysqlDatabase {
     connect()
   }
 
-  def deleteUser(selectedUser: String): Unit = {
+  def deleteUser(delUser: String): Unit = {
     connect()
+    val statement = connection.createStatement().executeUpdate(s"Delete From users where username = '$delUser'")
 
+    if (statement == 0) {
+      println("User does not exist, please try again")
+    } else {
+      println("User deleted")
+    }
 
   }
 
