@@ -80,7 +80,7 @@ object mysqlDatabase {
 
 
 
-  def checkifExists(userCheck: String): Int = {
+  def checkifExists(userCheck: String): Boolean = {
   connect()
     var bufferL = new ListBuffer[String]()
 
@@ -90,12 +90,11 @@ object mysqlDatabase {
       bufferL += resultSet.getString("Username")
     }
     val userList = bufferL.toList
-    val x = (userList.contains(userCheck))
-    val bol = true
-    if (x == bol) {//user is detected
-      return 0
+    val check = (userList.contains(userCheck))
+    if (check) {//user is detected
+      true
     } else {//User is not detected
-      return 1
+      false
     }
   }
 
@@ -139,7 +138,22 @@ object mysqlDatabase {
 
   def elevateUser2Admin(selectedUser: String): Unit = {//decide whether to use id or unique username
     connect()
-    val statement = connection.prepareStatement(s"UPDATE users SET AdminPriv = '1' WHERE iduser = $selectedUser")
+    val statement = connection.createStatement()
+
+    val rsSet = statement.executeUpdate(s"UPDATE users SET AMADMIN = 1 where username = '$selectedUser'")
+//    val statement = connection.prepareStatement("SELECT  Firstname, Lastname, Username FROM users")
+//    try {
+//      val resultSet = statement.executeQuery()
+//      println("Users")
+//      while (resultSet.next()) {
+//        println(resultSet.getString("USERNAME"))
+//      }
+//    } catch {
+//      case e: Exception => e.printStackTrace()
+//    }
+//    println("which user should be made into admin")
+//
+//    val update = connection.prepareStatement(s"UPDATE users SET AdminPriv = '1' WHERE iduser = $selectedUser")
 
   }
 
@@ -176,6 +190,19 @@ object mysqlDatabase {
 
     }
   }
+  def validateAdmin(usersUserName: String): Boolean = {
+    connect()
+
+    val statement = connection.prepareStatement(s"SELECT * From users WHERE Username = '$usersUserName' AND AdminPriv = '1'")
+    var validUsername = statement.executeQuery()
+
+    try {
+      if (!validUsername.next()) {false}
+      else {true}
+    }
+  }
+
+
 
 //  def checkIsAdmin(usersUserName: String): Int = {
 //
