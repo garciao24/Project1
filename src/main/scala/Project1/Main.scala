@@ -7,6 +7,7 @@ import scala.sys.exit
 
 object Main {
   private var bool : Boolean = false
+  private var admin : Boolean = false
   private var currentUser = ""
   private var otherUser = ""
 
@@ -189,8 +190,8 @@ object Main {
       case "4" => changePassword()
       case "5" =>
       case "6" => logout()
-      case "7" =>
-      case "8" =>
+      case "7" => deleteUser()
+      case "8" => close()
       case _ => mainStartUpMenu()
     }
     adminMenu()
@@ -219,10 +220,7 @@ object Main {
 
     mysqlDatabase.elevate2Admin(otherUser)
     println("user is now admin")
-
   }
-
-
 
   def changeUsername(): Unit = {
     println("Changing your current username => ")
@@ -234,27 +232,6 @@ object Main {
     }while(bool)
 
     mysqlDatabase.updateUsername(currentUser,otherUser)
-
-
-
-
-//    val listr = List("y","n")
-//    do {
-//      println("Enter y/n -> ")
-//      val input = scala.io.StdIn.readLine().toLowerCase()
-//      bool = listr.contains(input)
-//      if ('y' == input){
-//
-//      }
-//      else if ('n' == input){
-//
-//      }
-//
-//    }while(!bool)
-
-
-
-
   }
 
   def changeName(): Unit = {
@@ -294,7 +271,27 @@ object Main {
 
 
   def deleteUser(): Unit = {
-    mysqlDatabase
+    println("Are you sure about this")
+    val listr = List("y","n")
+    do {
+      println("Enter y/n -> ")
+      val input = scala.io.StdIn.readLine().toLowerCase()
+      bool = listr.contains(input)
+      if ('y' == input){
+
+      }
+      else if ('n' == input){
+        if(admin){
+          adminMenu()
+        }
+        else{
+          userMenu()
+        }
+      }
+    }while(!bool)
+    mysqlDatabase.deleteUser(currentUser)
+    println("goodbye")
+    mainStartUpMenu()
 
   }
 

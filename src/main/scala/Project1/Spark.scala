@@ -38,17 +38,12 @@ object Spark {
       .option("password",pass).load()
   }
 
-
   def displayUsers():Unit = {
     updateTable()
-    //sourceDf.show()
-
     sourceDf.createOrReplaceTempView("usersView")
     val newTable = spark.sql("SELECT Firstname, Lastname, Username FROM usersView ")
     newTable.show()
-
   }
-
 
   def showNonAdmins():Unit = {
     updateTable()
