@@ -98,6 +98,7 @@ object mysqlDatabase {
 
       while (resultSet.next()) {
         print(resultSet.getString("Username"))
+        print("\n")
       }
     } catch {
       case e: Exception => e.printStackTrace()
@@ -147,6 +148,22 @@ object mysqlDatabase {
 
   }
 
+  def updatePassword(username:String, password: String): Unit = {
+    connect()
+    val statement = connection.prepareStatement(s"UPDATE users SET password = '$password' WHERE Username = $username")
+
+    try {
+      val resultSet = statement.executeQuery()
+      println("Users")
+      while (resultSet.next()) {
+        println(resultSet.getString("USERNAME"))
+      }
+    } catch {
+      case e: Exception => e.printStackTrace()
+    }
+
+  }
+
 
 
   def updateName(newFirstName: String, newLastName: String,existingUser : String): Unit = {
@@ -167,8 +184,9 @@ object mysqlDatabase {
   def elevate2Admin(selectedUser: String): Unit = {//decide whether to use id or unique username
     connect()
     val statement = connection.createStatement()
-
     val rsSet = statement.executeUpdate(s"UPDATE users SET AdminPriv = 1 where username = '$selectedUser'")
+
+
 
 
 
@@ -183,12 +201,10 @@ object mysqlDatabase {
     } else {
       println("User deleted")
     }
-
   }
 
   def validateLogin(usersUserName: String, usersPassword: String): Boolean = {
     connect()
-
     val statement = connection.prepareStatement(s"SELECT * From users WHERE Username = '$usersUserName' AND password = '$usersPassword'")
     var validUsername = statement.executeQuery()
 
@@ -199,14 +215,13 @@ object mysqlDatabase {
         false
 
       } else {
-
         println("Username and Password are correct.")
         print("")
         true
       }
-
     }
   }
+
   def validateAdmin(usersUserName: String): Boolean = {
     connect()
 
