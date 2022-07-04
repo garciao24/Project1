@@ -1,9 +1,12 @@
 package Project1
 
-import ujson.IndexedValue.True
+import org.apache.log4j.{Level, Logger}
+import org.apache.spark.sql.SparkSession
 
-import java.sql.{Connection, DriverManager, ResultSet, SQLException, Statement}
+import java.sql.{Connection, DriverManager, SQLException}
 import scala.collection.mutable.ListBuffer
+
+
 
 object mysqlDatabase {
 
@@ -19,13 +22,23 @@ object mysqlDatabase {
     try {
       Class.forName(driver)
       connection = DriverManager.getConnection(url, username, password)
-      println("MySQL CONNECTION IS GOOD")
+      //println("MySQL CONNECTION IS GOOD")
 
     } catch {
       case e: Exception => e.printStackTrace()
         println("something is wrong")
     }
+
+
+
+
+
+//
+
   }
+
+
+
 
   def createUser(FirstName: String, LastName: String, Username: String, Password: String, AdminPriv: Int): Int = {
     connect()
@@ -48,19 +61,19 @@ object mysqlDatabase {
     }
   }
 
-  def showAllUsers(): Unit = {
-    connect()
-    val statement = connection.prepareStatement("SELECT  Firstname, Lastname, Username FROM users")
-    try {
-      val resultSet = statement.executeQuery()
-      println("Users")
-      while (resultSet.next()) {
-        println(resultSet.getString("USERNAME"))
-      }
-    } catch {
-      case e: Exception => e.printStackTrace()
-    }
-  }
+//  def showAllUsers(): Unit = {///spark
+//    connect()
+//    val statement = connection.prepareStatement("SELECT  Firstname, Lastname, Username FROM users")
+//    try {
+//      val resultSet = statement.executeQuery()
+//      println("Users")
+//      while (resultSet.next()) {
+//        println(resultSet.getString("USERNAME"))
+//      }
+//    } catch {
+//      case e: Exception => e.printStackTrace()
+//    }
+//  }
 
   def showUser(Username: String): Unit = {
     connect()
@@ -77,6 +90,21 @@ object mysqlDatabase {
       case e: Exception => e.printStackTrace()
     }
   }
+  def showUsername(Username: String): Unit = {
+    connect()
+    val statement = connection.prepareStatement(s"SELECT Username FROM users WHERE Username = '$Username' ")
+    try {
+      val resultSet = statement.executeQuery()
+
+      while (resultSet.next()) {
+        print(resultSet.getString("Username"))
+      }
+    } catch {
+      case e: Exception => e.printStackTrace()
+    }
+  }
+
+
 
 
 
@@ -103,9 +131,9 @@ object mysqlDatabase {
 
 
 
-  def updateUsername(Iduser: Int, usersUserName: String): Unit = {
+  def updateUsername(oldusername:String, NewUserName: String): Unit = {
     connect()
-    val statement = connection.prepareStatement(s"UPDATE users SET Username = '$usersUserName' WHERE iduser = $Iduser")
+    val statement = connection.prepareStatement(s"UPDATE users SET Username = '$NewUserName' WHERE Username = $oldusername")
 
     try {
       val resultSet = statement.executeQuery()
@@ -136,24 +164,13 @@ object mysqlDatabase {
     }
   }
 
-  def elevateUser2Admin(selectedUser: String): Unit = {//decide whether to use id or unique username
+  def elevate2Admin(selectedUser: String): Unit = {//decide whether to use id or unique username
     connect()
     val statement = connection.createStatement()
 
-    val rsSet = statement.executeUpdate(s"UPDATE users SET AMADMIN = 1 where username = '$selectedUser'")
-//    val statement = connection.prepareStatement("SELECT  Firstname, Lastname, Username FROM users")
-//    try {
-//      val resultSet = statement.executeQuery()
-//      println("Users")
-//      while (resultSet.next()) {
-//        println(resultSet.getString("USERNAME"))
-//      }
-//    } catch {
-//      case e: Exception => e.printStackTrace()
-//    }
-//    println("which user should be made into admin")
-//
-//    val update = connection.prepareStatement(s"UPDATE users SET AdminPriv = '1' WHERE iduser = $selectedUser")
+    val rsSet = statement.executeUpdate(s"UPDATE users SET AdminPriv = 1 where username = '$selectedUser'")
+
+
 
   }
 

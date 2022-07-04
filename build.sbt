@@ -17,4 +17,5 @@ libraryDependencies += "com.lihaoyi" %% "ujson" % "2.0.0"
 libraryDependencies += "com.lihaoyi" %% "requests" % "0.7.1"
 libraryDependencies += "com.lihaoyi" %% "os-lib" % "0.8.1"
 
+libraryDependencies +="com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.13.3"
 
