@@ -1,8 +1,6 @@
 package Project1
 
 
-import Project1.Main.currentUser
-
 import scala.annotation.tailrec
 import scala.sys.exit
 
@@ -61,18 +59,19 @@ object Main {
 
 
     //val tttt = mysqlDatabase.checkifExists("ogg")
+    val listr = List("y","n")
+        do {
+          println("Enter y/n -> ")
+          val input = scala.io.StdIn.readLine().toLowerCase()
+          bool = listr.contains(input)
+          if ('y' == input){
 
+          }
+          else if ('n' == input){
 
-    do {
-      println("Please enter in your new username")
-      otherUser = scala.io.StdIn.readLine()
-      bool = mysqlDatabase.checkifExists(otherUser)
-    }while(bool)
+          }
 
-
-
-
-
+        }while(!bool)
 
 
 
@@ -173,8 +172,8 @@ object Main {
     println("Master what would oyu like me to do? Please select an option 1-5")
     println {
       "Option 1: Make a new Admin\n" +
-        "Option 2: Change Name\n" +
-        "Option 3: Change Username\n" +
+        "Option 2: Change Username\n" +
+        "Option 3: Change Name\n" +
         "Option 4: Change Password\n" +
         "Option 5: Go to data \n" +
         "Option 6: Logout\n" +
@@ -186,10 +185,10 @@ object Main {
     option match {
       case "1" => upAdmin()
       case "2" => changeUsername()
-      case "3" =>
-      case "4" =>
+      case "3" => changeName()
+      case "4" => changePassword()
       case "5" =>
-      case "6" =>
+      case "6" => logout()
       case "7" =>
       case "8" =>
       case _ => mainStartUpMenu()
@@ -258,21 +257,44 @@ object Main {
 
   }
 
+  def changeName(): Unit = {
+    println("Current Name -> ")
+    mysqlDatabase.showUser(currentUser)
+    println("Input New First Name")
+    val fname = scala.io.StdIn.readLine()
+
+    println("Input New Last Name")
+    val lname = scala.io.StdIn.readLine()
+
+    mysqlDatabase.updateName(fname,lname,currentUser)
+  }
+
 
 
   def changePassword(): Unit = {
-    println("Changing password for current username => ")
+    print("Changing password for current username => ")
     mysqlDatabase.showUsername(currentUser)
     do {
-      println("Please enter  your old password")
+      println("Please enter your old password")
       otherUser = scala.io.StdIn.readLine()
-      bool = mysqlDatabase.checkifExists(otherUser)
-    }while(bool)
+      bool = mysqlDatabase.validateLogin(currentUser,otherUser)
+    }while(!bool)
 
     println("Enter new password")
-    mysqlDatabase.
+    val pass = scala.io.StdIn.readLine()
 
-    
+    mysqlDatabase.updatePassword(currentUser,pass)
+  }
+
+  def logout(): Unit = {
+    currentUser = ""
+    otherUser = ""
+    mainStartUpMenu()
+  }
+
+
+  def deleteUser(): Unit = {
+    mysqlDatabase
 
   }
 
