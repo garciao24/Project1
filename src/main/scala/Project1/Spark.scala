@@ -55,11 +55,16 @@ object Spark {
 
     spark.sql("DROP TABLE IF EXISTS Query5")
     spark.sql("create table Query5(State String,SEX String,`Age Group` String,`Other Causes of Death` Int) row format delimited fields terminated by ',' stored as textfile")
-    spark.sql("INSERT INTO TABLE Query5(SELECT State,Sex,`Age Group`,(`Total Deaths`-`COVID-19 Deaths`) AS `Other Causes of Death` From Test WHERE `Age Group` = 'All Ages' AND Sex = 'All Sexes' AND Group = 'By Total' ORDER BY `Other Causes of Death` ASC)")
-    spark.sql("Select * From Query5").show(50)
+    spark.sql("INSERT INTO TABLE Query5(SELECT State,Sex,`Age Group`,(`Total Deaths`-`COVID-19 Deaths`) AS `Other Causes of Death` From Main WHERE `Age Group` = 'All Ages' AND Sex = 'All Sexes' AND Group = 'By Total' ORDER BY `Other Causes of Death` ASC)")
+    //spark.sql("Select * From Query5").show(50)
 
 
 
+    spark.sql("DROP TABLE IF EXISTS Query6")
+    spark.sql("create table Query6(`Start Date` String,`End Date` String,Year Int,Month Int,State String,Sex String,`Age Group` String,`COVID-19 Deaths` Int,`Pneumonia Deaths` Int,`Influenza Deaths` Int, `Pneumonia Int/Influenza/COVID-19 Deaths` Int,`Other Causes of Death` Int,`Total Deaths` Int) row format delimited fields terminated by ',' stored as textfile")
+    spark.sql("INSERT INTO TABLE Query6(SELECT `Start Date`,`End Date`,Year,Month,State,Sex,`Age Group`,`COVID-19 Deaths`,`Pneumonia Deaths`,`Influenza Deaths`, `Pneumonia, Influenza, or COVID-19 Deaths`,`Total Deaths`-`Pneumonia, Influenza, or COVID-19 Deaths` ,`Total Deaths` FROM Main " +
+      "WHERE State = 'United States' AND Sex = 'All Sexes' AND Group = 'By Month' AND Year = '2022' AND `Age Group` = 'All Ages' Order BY Month DESC)")
+    spark.sql("Select * From Query6").show(50)
 
 
 
