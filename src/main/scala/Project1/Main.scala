@@ -159,7 +159,6 @@ object Main {
   }
 
 
-  @tailrec
   def adminMenu(): Unit = {
     println("YOu have arrived at the Admin menu, Admin, welcome master")
     println("Please select an option 1-8")
@@ -180,21 +179,20 @@ object Main {
       case "2" => changeUsername()
       case "3" => changeName()
       case "4" => changePassword()
-      case "5" =>
+      case "5" => dataChoiceAdmin()
       case "6" => logout()
       case "7" => deleteUser()
       case "8" => close()
-      case _ => mainStartUpMenu()
+      case _ => adminMenu()
     }
     adminMenu()
   }
 
 
 
-  @tailrec
   def userMenu(): Unit = {
     println("Regular User Menu ")
-    println("Please select an option 1-5")
+    println("Please select an option 1-7")
     println {
         "Option 1: Change Username\n" +
         "Option 2: Change Name\n" +
@@ -210,11 +208,11 @@ object Main {
       case "1" => changeUsername()
       case "2" => changeName()
       case "3" => changePassword()
-      case "4" =>
+      case "4" => dataChoiceRegular()
       case "5" => logout()
       case "6" => deleteUser()
       case "7" => close()
-      case _ => mainStartUpMenu()
+      case _ => userMenu()
     }
     userMenu()
   }
@@ -223,7 +221,7 @@ object Main {
 
 
   @tailrec
-  def dataChoice(): Unit = {
+  def dataChoiceAdmin(): Unit = {
     println("Choice 1: ")
     println("Choice 2: ")
     println("Choice 3: ")
@@ -240,8 +238,32 @@ object Main {
       case "5" => Spark.query5()
       case "6" => Spark.query6()
       case "7" => goBack()
-      case _ =>  dataChoice()
+      case _ =>  dataChoiceAdmin()
     }
+  }
+
+
+  def dataChoiceRegular():Unit = {
+    println("Choice 1: ")
+    println("Choice 2: ")
+    println("Choice 3: ")
+    println("Choice 4: ")
+    println("Choice 5: ")
+    println("Choice 6: ")
+    println("Choice 7: Go Back ")
+    var choiceQuery = scala.io.StdIn.readLine()
+    choiceQuery match {
+      case "1" => Spark.query1()
+      case "2" => Spark.query2()
+      case "3" => Spark.query3()
+      case "4" => Spark.query4()
+      case "5" => Spark.query5()
+      case "6" => Spark.query6()
+      case "7" => goBack()
+      case _ =>  dataChoiceAdmin()
+    }
+
+
   }
 
 
