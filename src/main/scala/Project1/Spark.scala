@@ -1,9 +1,10 @@
 package Project1
 
-import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.SparkSession
+
+import org.apache.spark.sql.{DataFrame, Encoders, SparkSession}
 
 object Spark {
+  private var bool : Boolean = false
   private var spark: SparkSession = _
   private var userDf: DataFrame = _
   private var dataDf: DataFrame = _
@@ -39,12 +40,10 @@ object Spark {
     //spark.sql("Select * From Query2").show()
 
 
-
     spark.sql("DROP TABLE IF EXISTS Query3")
     spark.sql("create table Query3(`Age Group` String,`COVID-19 Deaths` Int) partitioned by (Sex String) row format delimited fields terminated by ',' stored as textfile")
     spark.sql("INSERT INTO TABLE Query3 (SELECT `Age Group`,`COVID-19 Deaths`,Sex FROM Main WHERE State = 'United States' AND Group = 'By Total'  )")
     //spark.sql("Select `Age Group`,Sex,`COVID-19 Deaths` From Query3 WHERE Sex = 'All Sexes'").show()
-
 
 
     spark.sql("DROP TABLE IF EXISTS Query4")
@@ -59,13 +58,15 @@ object Spark {
     //spark.sql("Select * From Query5").show(50)
 
 
-
     spark.sql("DROP TABLE IF EXISTS Query6")
     spark.sql("create table Query6(`Start Date` String,`End Date` String,Year Int,Month Int,State String,Sex String,`Age Group` String,`COVID-19 Deaths` Int,`Pneumonia Deaths` Int,`Influenza Deaths` Int, `Pneumonia Int/Influenza/COVID-19 Deaths` Int,`Other Causes of Death` Int,`Total Deaths` Int) row format delimited fields terminated by ',' stored as textfile")
     spark.sql("INSERT INTO TABLE Query6(SELECT `Start Date`,`End Date`,Year,Month,State,Sex,`Age Group`,`COVID-19 Deaths`,`Pneumonia Deaths`,`Influenza Deaths`, `Pneumonia, Influenza, or COVID-19 Deaths`,`Total Deaths`-`Pneumonia, Influenza, or COVID-19 Deaths` ,`Total Deaths` FROM Main " +
       "WHERE State = 'United States' AND Sex = 'All Sexes' AND Group = 'By Month' AND Year = '2022' AND `Age Group` = 'All Ages' Order BY Month DESC)")
-    spark.sql("Select * From Query6").show(50)
+    //spark.sql("Select * From Query6").show(50)
+  }
 
+  def close():Unit = {
+    spark.close()
   }
 
   def updateTable():Unit = {
@@ -100,13 +101,48 @@ object Spark {
 
 
   def query1():Unit = {
-    val state = "Texas"
+    var state = ""
 
+    val datalist = spark.sql("SELECT DISTINCT State From Main ORDER BY State ASC")
+    val listOne = datalist.as(Encoders.STRING).collectAsList
+
+//    val check = listOne.contains("Texas")
+//
+//    if (check) {//user is detected
+//      //println("it there")
+//      spark.sql(s"SELECT `Start Date`,`End Date`,`Sex`,`State`,`Age Group`,`Covid-19 Deaths`,`Pneumonia Deaths`,`Influenza Deaths`,`Pneumonia Int/Influenza/COVID-19 Deaths`,`Other Causes of Death`,`Total Deaths` FROM Query1 " +
+//        s"WHERE State = '$state' ").show()
+//    } else {//User is not detected
+//      query1()
+//    }
+
+    println("Accepted State inputs")
+    datalist.show(55)
+    do {
+      println("Please enter a state")
+      state = scala.io.StdIn.readLine()
+      bool = listOne.contains(state)
+    }while(!bool)
 
     spark.sql(s"SELECT `Start Date`,`End Date`,`Sex`,`State`,`Age Group`,`Covid-19 Deaths`,`Pneumonia Deaths`,`Influenza Deaths`,`Pneumonia Int/Influenza/COVID-19 Deaths`,`Other Causes of Death`,`Total Deaths` FROM Query1 " +
-      s"WHERE State = '$state' ").show()
+            s"WHERE State = '$state' ").show()
+  }
 
+  def query2():Unit = {
 
+    spark.sql("Select * From Query2").show()
+  }
+
+  def query3():Unit = {
+    var input = ""
+    val listOne = List("All Sexes","Female","Male")
+    do {
+
+      println("Please enter from the given choices => [\"All Sexes\",\"Female\",\"Male\"]")
+      input = scala.io.StdIn.readLine()
+      bool = listOne.contains(input)
+    }while(!bool)
+    spark.sql(s"Select `Age Group`,Sex,`COVID-19 Deaths` From Query3 WHERE Sex = '$input'").show()
   }
 
 

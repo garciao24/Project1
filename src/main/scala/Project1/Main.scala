@@ -64,8 +64,10 @@ object Main {
 
     //val tttt = mysqlDatabase.checkifExists("ogg")
 //    mainStartUpMenu()
+    mysqlDatabase.connect()
     Spark.connect()
     //Spark.query1()
+    Spark.query3()
 
 
 
@@ -94,6 +96,7 @@ object Main {
   }
   def close(): Unit = {
     mysqlDatabase.disDB()
+    Spark.close()
     exit(0)
   }
 
@@ -198,7 +201,7 @@ object Main {
         "Option 3: Change Password\n" +
         "Option 4: Go to data \n" +
         "Option 5: Logout\n" +
-        "Option 6: Delete Account\n +" +
+        "Option 6: Delete Account\n" +
         "Option 7: exit app"
     }
 
@@ -236,14 +239,19 @@ object Main {
       case "4" => println("4")
       case "5" => println("5")
       case "6" => println("6")
-      case "7" =>
+      case "7" => goBack()
       case _ =>  dataChoice()
     }
   }
 
 
-  def goBaCK():Unit = {
-
+  def goBack():Unit = {
+    if(admin){
+      adminMenu()
+    }
+    else{
+      userMenu()
+    }
   }
 
 
