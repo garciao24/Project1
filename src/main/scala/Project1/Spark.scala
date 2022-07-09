@@ -66,29 +66,6 @@ object Spark {
       "WHERE State = 'United States' AND Sex = 'All Sexes' AND Group = 'By Month' AND Year = '2022' AND `Age Group` = 'All Ages' Order BY Month DESC)")
     spark.sql("Select * From Query6").show(50)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   }
 
   def updateTable():Unit = {
