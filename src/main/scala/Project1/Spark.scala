@@ -61,7 +61,7 @@ object Spark {
     spark.sql("DROP TABLE IF EXISTS Query6")
     spark.sql("create table Query6(`Start Date` String,`End Date` String,Year Int,Month Int,State String,Sex String,`Age Group` String,`COVID-19 Deaths` Int,`Pneumonia Deaths` Int,`Influenza Deaths` Int, `Pneumonia Int/Influenza/COVID-19 Deaths` Int,`Other Causes of Death` Int,`Total Deaths` Int) row format delimited fields terminated by ',' stored as textfile")
     spark.sql("INSERT INTO TABLE Query6(SELECT `Start Date`,`End Date`,Year,Month,State,Sex,`Age Group`,`COVID-19 Deaths`,`Pneumonia Deaths`,`Influenza Deaths`, `Pneumonia, Influenza, or COVID-19 Deaths`,`Total Deaths`-`Pneumonia, Influenza, or COVID-19 Deaths` ,`Total Deaths` FROM Main " +
-      "WHERE State = 'United States' AND Sex = 'All Sexes' AND Group = 'By Month' AND Year = '2022' AND `Age Group` = 'All Ages' Order BY Month DESC)")
+      "WHERE Sex = 'All Sexes' AND Group = 'By Month' AND Year = '2022' AND `Age Group` = 'All Ages' Order BY Month DESC)")
     //spark.sql("Select * From Query6").show(50)
   }
 
@@ -105,16 +105,6 @@ object Spark {
 
     val datalist = spark.sql("SELECT DISTINCT State From Main ORDER BY State ASC")
     val listOne = datalist.as(Encoders.STRING).collectAsList
-
-//    val check = listOne.contains("Texas")
-//
-//    if (check) {//user is detected
-//      //println("it there")
-//      spark.sql(s"SELECT `Start Date`,`End Date`,`Sex`,`State`,`Age Group`,`Covid-19 Deaths`,`Pneumonia Deaths`,`Influenza Deaths`,`Pneumonia Int/Influenza/COVID-19 Deaths`,`Other Causes of Death`,`Total Deaths` FROM Query1 " +
-//        s"WHERE State = '$state' ").show()
-//    } else {//User is not detected
-//      query1()
-//    }
 
     println("Accepted State inputs")
     datalist.show(55)
@@ -167,6 +157,24 @@ object Spark {
 
   def query5():Unit = {
     spark.sql("Select * From Query5").show(60)
+  }
+
+  def query6():Unit = {
+
+    var state = ""
+
+    val datalist = spark.sql("SELECT DISTINCT State From Main ORDER BY State ASC")
+    val listOne = datalist.as(Encoders.STRING).collectAsList
+
+    println("Accepted State inputs")
+    datalist.show(55)
+    do {
+      println("Please enter a state")
+      state = scala.io.StdIn.readLine()
+      bool = listOne.contains(state)
+    }while(!bool)
+
+    spark.sql(s"Select * From Query6 WHERE State = '$state'").show(50)
   }
 
   def APIQueries(selectedQuery: String): Unit = {
