@@ -188,6 +188,7 @@ object Main {
 
 
 
+  @tailrec
   def userMenu(): Unit = {
     println("Regular User Menu ")
     println("Please select an option 1-5")
@@ -213,6 +214,36 @@ object Main {
       case _ => mainStartUpMenu()
     }
     userMenu()
+  }
+
+
+
+
+  @tailrec
+  def dataChoice(): Unit = {
+    println("Choice 1: ")
+    println("Choice 2: ")
+    println("Choice 3: ")
+    println("Choice 4: ")
+    println("Choice 5: ")
+    println("Choice 6: ")
+    println("Choice 7: Go Back ")
+    var choiceQuery = scala.io.StdIn.readLine()
+    choiceQuery match {
+      case "1" => println("1")
+      case "2" => println("2")
+      case "3" => println("3")
+      case "4" => println("4")
+      case "5" => println("5")
+      case "6" => println("6")
+      case "7" =>
+      case _ =>  dataChoice()
+    }
+  }
+
+
+  def goBaCK():Unit = {
+
   }
 
 
