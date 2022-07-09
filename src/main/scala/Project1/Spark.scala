@@ -40,6 +40,12 @@ object Spark {
 
 
 
+    spark.sql("DROP TABLE IF EXISTS Query3")
+    spark.sql("create table Query3(`Age Group` String,`COVID-19 Deaths` Int) partitioned by (Sex String) row format delimited fields terminated by ',' stored as textfile")
+    spark.sql("INSERT INTO TABLE Query3 (SELECT `Age Group`,`COVID-19 Deaths`,Sex FROM Main WHERE State = 'United States' AND Group = 'By Total'  )")
+    //spark.sql("Select `Age Group`,Sex,`COVID-19 Deaths` From Query3 WHERE Sex = 'All Sexes'").show()
+
+
 
 
 
@@ -98,21 +104,29 @@ object Spark {
   }
 
 
+  def query1():Unit = {
+    val state = "Texas"
 
 
+    spark.sql(s"SELECT `Start Date`,`End Date`,`Sex`,`State`,`Age Group`,`Covid-19 Deaths`,`Pneumonia Deaths`,`Influenza Deaths`,`Pneumonia Int/Influenza/COVID-19 Deaths`,`Other Causes of Death`,`Total Deaths` FROM Query1 " +
+      s"WHERE State = '$state' ").show()
+
+
+  }
 
 
 
   def APIQueries(selectedQuery: String): Unit = {
     //DONE: Use something similar to a switch statement to run/ set up each query
     selectedQuery match {
-      case "1" =>
+      case "1" => query1()
       case "2" =>
       case "3" =>
       case "4" =>
       case "5" =>
       case "6" =>
       case "7" =>
+      case _ =>
 
     }
   }

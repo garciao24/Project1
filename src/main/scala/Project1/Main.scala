@@ -65,6 +65,7 @@ object Main {
     //val tttt = mysqlDatabase.checkifExists("ogg")
 //    mainStartUpMenu()
     Spark.connect()
+    //Spark.query1()
 
 
 
