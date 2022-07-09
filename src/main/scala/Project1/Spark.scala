@@ -165,6 +165,9 @@ object Spark {
   }
 
 
+  def query5():Unit = {
+    spark.sql("Select * From Query5").show(60)
+  }
 
   def APIQueries(selectedQuery: String): Unit = {
     //DONE: Use something similar to a switch statement to run/ set up each query
