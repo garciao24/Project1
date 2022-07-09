@@ -90,6 +90,7 @@ object mysqlDatabase {
       case e: Exception => e.printStackTrace()
     }
   }
+
   def showUsername(Username: String): Unit = {
     connect()
     val statement = connection.prepareStatement(s"SELECT Username FROM users WHERE Username = '$Username' ")

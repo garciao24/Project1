@@ -1,6 +1,4 @@
 package Project1
-
-
 import scala.annotation.tailrec
 import scala.sys.exit
 
@@ -24,8 +22,9 @@ object Main {
     ///////////
 //        val data = requests.get(" https://data.cdc.gov/resource/9bhg-hcku.json")
 //        val text = data.text()
+//
 //        val json = ujson.read(text)
-//        os.write(os.pwd/"api.json",json)//test hdfs figure it out
+//        os.write(os.pwd/"C:\\input\\tmp.json",json)//test hdfs figure it out
 //
 //        val spark = SparkSession
 //          .builder()
@@ -35,8 +34,12 @@ object Main {
 //          .getOrCreate()
 //        Logger.getLogger("org").setLevel(Level.ERROR)
 //        println("created spark session")
-//        val df = spark.read.json(path = "tmp.json")
+//        val df = spark.read.json(path = "C:\\input\\tmp.json")
 //        df.show()
+//
+//    df.createOrReplaceTempView("test")
+//    val newTable = spark.sql("SELECT * FROM test ")
+//    newTable.show()
     ////////////////
 
 
@@ -60,21 +63,8 @@ object Main {
 
 
     //val tttt = mysqlDatabase.checkifExists("ogg")
-    val listr = List("y","n")
-        do {
-          println("Enter y/n -> ")
-          val input = scala.io.StdIn.readLine().toLowerCase()
-          bool = listr.contains(input)
-          if ('y' == input){
-
-          }
-          else if ('n' == input){
-
-          }
-
-        }while(!bool)
-
-
+//    mainStartUpMenu()
+    Spark.connect()
 
 
 
@@ -99,8 +89,6 @@ object Main {
       case "2" => CreateNewAccount()
       case "3" => close()
       case _ => mainStartUpMenu()
-
-
     }
   }
   def close(): Unit = {
@@ -170,7 +158,7 @@ object Main {
   @tailrec
   def adminMenu(): Unit = {
     println("YOu have arrived at the Admin menu, Admin, welcome master")
-    println("Master what would oyu like me to do? Please select an option 1-5")
+    println("Please select an option 1-8")
     println {
       "Option 1: Make a new Admin\n" +
         "Option 2: Change Username\n" +
@@ -200,9 +188,30 @@ object Main {
 
 
   def userMenu(): Unit = {
+    println("Regular User Menu ")
+    println("Please select an option 1-5")
+    println {
+        "Option 1: Change Username\n" +
+        "Option 2: Change Name\n" +
+        "Option 3: Change Password\n" +
+        "Option 4: Go to data \n" +
+        "Option 5: Logout\n" +
+        "Option 6: Delete Account\n +" +
+        "Option 7: exit app"
+    }
 
-
-
+    val option = scala.io.StdIn.readLine()
+    option match {
+      case "1" => changeUsername()
+      case "2" => changeName()
+      case "3" => changePassword()
+      case "4" =>
+      case "5" => logout()
+      case "6" => deleteUser()
+      case "7" => close()
+      case _ => mainStartUpMenu()
+    }
+    userMenu()
   }
 
 
