@@ -25,6 +25,8 @@ object Spark {
     //dataDf = spark.read.option("delimiter", ",").option("inferSchema","true").option("header", "true").csv(path = "C:\\input\\tmp.csv")
     val df = spark.read.option("delimiter", ",").option("inferSchema","true").option("header", "true").csv(path = "C:\\input\\tmp.csv")
 
+    df.createOrReplaceTempView("Main")
+
 
 
 
