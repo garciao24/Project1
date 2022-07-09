@@ -4,8 +4,6 @@ import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.SparkSession
 
 object Spark {
-
-
   private var spark: SparkSession = _
   private var userDf: DataFrame = _
   private var dataDf: DataFrame = _
@@ -34,6 +32,12 @@ object Spark {
     spark.sql("INSERT INTO TABLE Query1 (SELECT `Start Date`,`End Date`,Sex,`Age Group`,`COVID-19 Deaths`,`Pneumonia Deaths`,`Influenza Deaths`, `Pneumonia, Influenza, or COVID-19 Deaths`,`Total Deaths`-`Pneumonia, Influenza, or COVID-19 Deaths` AS `Other Causes of Death`,`Total Deaths`,State FROM Main WHERE Sex = 'All Sexes' AND Group = 'By Total' )")
 
     //spark.sql("SELECT `Start Date`,`End Date`,`Sex`,`State`,`Age Group`,`Covid-19 Deaths`,`Pneumonia Deaths`,`Influenza Deaths`,`Pneumonia Int/Influenza/COVID-19 Deaths`,`Other Causes of Death`,`Total Deaths` FROM Query1").show()
+
+    spark.sql("DROP TABLE IF EXISTS Query2")
+    spark.sql("create table Query2(`State` String,`Total Death` Int) row format delimited fields terminated by ',' stored as textfile")
+    spark.sql("INSERT INTO TABLE Query2 (Select  State, MAX(`COVID-19 Deaths`) AS totalDeath from Main WHERE State != 'United States' Group by State Order By totalDeath DESC)")
+    //spark.sql("Select * From Query2").show()
+
 
 
 
