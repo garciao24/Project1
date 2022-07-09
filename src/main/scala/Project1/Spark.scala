@@ -145,6 +145,25 @@ object Spark {
     spark.sql(s"Select `Age Group`,Sex,`COVID-19 Deaths` From Query3 WHERE Sex = '$input'").show()
   }
 
+  def query4():Unit = {
+
+    spark.sql("Select Year,CASE " +
+      "WHEN Month = 1 THEN 'January' " +
+      "WHEN Month = 2 THEN 'February' " +
+      "WHEN Month = 3 THEN 'March' " +
+      "WHEN Month = 4 THEN 'April' " +
+      "WHEN Month = 5 THEN 'May' " +
+      "WHEN Month = 6 THEN 'June' " +
+      "WHEN Month = 7 THEN 'July' " +
+      "WHEN Month = 8 THEN 'August' " +
+      "WHEN Month = 9 THEN 'September' " +
+      "WHEN Month = 10 THEN 'October' " +
+      "WHEN Month = 11 THEN 'November' " +
+      "WHEN Month = 12 THEN 'December' " +
+      "ElSE Month " +
+      "END AS `Month`,`Total Covid-19 Death`  From Query4").show(50)
+  }
+
 
 
   def APIQueries(selectedQuery: String): Unit = {

@@ -67,7 +67,7 @@ object Main {
     mysqlDatabase.connect()
     Spark.connect()
     //Spark.query1()
-    Spark.query3()
+    Spark.query4()
 
 
 
