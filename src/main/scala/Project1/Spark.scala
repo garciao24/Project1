@@ -47,6 +47,13 @@ object Spark {
 
 
 
+    spark.sql("DROP TABLE IF EXISTS Query4")
+    spark.sql("create table Query4(Year Int,Month Int,`Total Covid-19 Death` Int) row format delimited fields terminated by ',' stored as textfile")
+    spark.sql("INSERT INTO TABLE Query4 (SELECT Year, Month, SUM(`COVID-19 Deaths`) AS `Total Covid-19 Death` FROM Main WHERE Month IS NOT NULL GROUP BY Month,Year ORDER BY Year,Month ASC  )")
+    spark.sql("Select * From Query4").show(50)
+
+
+
 
 
 
