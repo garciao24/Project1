@@ -67,7 +67,7 @@ object Main {
     mysqlDatabase.connect()
     Spark.connect()
     //Spark.query1()
-    Spark.query5()
+    Spark.query6()
 
 
 
@@ -233,12 +233,12 @@ object Main {
     println("Choice 7: Go Back ")
     var choiceQuery = scala.io.StdIn.readLine()
     choiceQuery match {
-      case "1" => println("1")
-      case "2" => println("2")
-      case "3" => println("3")
-      case "4" => println("4")
-      case "5" => println("5")
-      case "6" => println("6")
+      case "1" => Spark.query1()
+      case "2" => Spark.query2()
+      case "3" => Spark.query3()
+      case "4" => Spark.query4()
+      case "5" => Spark.query5()
+      case "6" => Spark.query6()
       case "7" => goBack()
       case _ =>  dataChoice()
     }
