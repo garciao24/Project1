@@ -26,13 +26,11 @@ object Spark {
     val df = spark.read.option("delimiter", ",").option("inferSchema","true").option("header", "true").csv(path = "C:\\input\\tmp.csv")
 
     df.createOrReplaceTempView("Main")
-    spark.sql("SELECT * FROM Main").show()
-
+    //spark.sql("SELECT * FROM Main").show()
 
 
     spark.sql("DROP TABLE IF EXISTS Query1")
     spark.sql("create table Query1(`Start Date` String,`End Date` String,Sex String,`Age Group` String,`COVID-19 Deaths` Int,`Pneumonia Deaths` Int,`Influenza Deaths` Int, `Pneumonia Int/Influenza/COVID-19 Deaths` Int,`Other Causes of Death` Int,`Total Deaths` Int) partitioned by (State STRING) row format delimited fields terminated by ',' stored as textfile")
-
     spark.sql("INSERT INTO TABLE Query1 (SELECT `Start Date`,`End Date`,Sex,`Age Group`,`COVID-19 Deaths`,`Pneumonia Deaths`,`Influenza Deaths`, `Pneumonia, Influenza, or COVID-19 Deaths`,`Total Deaths`-`Pneumonia, Influenza, or COVID-19 Deaths` AS `Other Causes of Death`,`Total Deaths`,State FROM Main WHERE Sex = 'All Sexes' AND Group = 'By Total' )")
 
     //spark.sql("SELECT `Start Date`,`End Date`,`Sex`,`State`,`Age Group`,`Covid-19 Deaths`,`Pneumonia Deaths`,`Influenza Deaths`,`Pneumonia Int/Influenza/COVID-19 Deaths`,`Other Causes of Death`,`Total Deaths` FROM Query1").show()
