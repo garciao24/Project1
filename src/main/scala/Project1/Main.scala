@@ -10,20 +10,10 @@ object Main {
   private var otherUser = ""
 
   def main(args: Array[String]): Unit = {
-
     mysqlDatabase.connect()
     Spark.connect()
     mainStartUpMenu()
-    //Spark.query5()
-
-//    val fname = "Oscar"
-//    val lname = "Garcia"
-//    currentUser = "ogarcia2834"
-//    mysqlDatabase.updateName(fname,lname,currentUser)
-
   }
-
-
 
   @tailrec
   def mainStartUpMenu(): Unit = {
@@ -92,7 +82,6 @@ object Main {
 
     val validLogin = mysqlDatabase.validateLogin(currentUser, password)
 
-    //println(validLogin)
 
     if(validLogin){
       println("\u001B[33mcorrect input going to user menu\u001B[0m")
