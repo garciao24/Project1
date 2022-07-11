@@ -19,3 +19,7 @@ libraryDependencies += "com.lihaoyi" %% "os-lib" % "0.8.1"
 
 libraryDependencies +="com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.13.3"
 
+libraryDependencies ++= Seq(
+  "org.apache.spark" %% "spark-core" % "3.2.1" % "provided",
+  "org.apache.commons" % "commons-lang3" % "3.12.0")
+

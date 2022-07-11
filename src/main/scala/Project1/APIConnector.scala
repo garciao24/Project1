@@ -9,7 +9,6 @@ object APIConnector {
     //    val result = hc.sql("SELECT * FROM projectone.salaries_extra;")
     //    result.show()
 
-
     val text = data.text()
     val json = ujson.read(text)
     os.write(os.pwd/"tmp.json",json)//test hdfs figure it out

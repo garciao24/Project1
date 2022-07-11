@@ -10,69 +10,16 @@ object Main {
   private var otherUser = ""
 
   def main(args: Array[String]): Unit = {
-    //println("Hello world!")
-    //meteorite data
-    //val data = requests.get(" https://data.nasa.gov/resource/y77d-th95.json")
 
-
-    //    val hc = new org.apache.spark.sql.hive.HiveContext(sc)
-    //    val result = hc.sql("SELECT * FROM projectone.salaries_extra;")
-    //    result.show()
-
-    ///////////
-//        val data = requests.get(" https://data.cdc.gov/resource/9bhg-hcku.json")
-//        val text = data.text()
-//
-//        val json = ujson.read(text)
-//        os.write(os.pwd/"C:\\input\\tmp.json",json)//test hdfs figure it out
-//
-//        val spark = SparkSession
-//          .builder()
-//          .appName("Hello Hive")
-//          .config("spark.master", "local[*]")
-//          .enableHiveSupport()
-//          .getOrCreate()
-//        Logger.getLogger("org").setLevel(Level.ERROR)
-//        println("created spark session")
-//        val df = spark.read.json(path = "C:\\input\\tmp.json")
-//        df.show()
-//
-//    df.createOrReplaceTempView("test")
-//    val newTable = spark.sql("SELECT * FROM test ")
-//    newTable.show()
-    ////////////////
-
-
-    //mainStartUpMenu()
-    //mysqlDatabase.showUser("ogarcia2834")
-
-
-    //mysqlDatabase.createUser("demo","test","yeahboi","5678",0)
-//    var validLogin = mysqlDatabase.validateLogin("ogarcia24","1234")
-//    println(validLogin)
-
-
-
-    //Spark.connect()
-//    Spark.updateTable()
-//    Spark.displayUsers()
-
-    //Spark.showNonAdmins()
-    //mysqlDatabase.connectionTest()
-//    mainStartUpMenu()
-
-
-    //val tttt = mysqlDatabase.checkifExists("ogg")
-//    mainStartUpMenu()
     mysqlDatabase.connect()
     Spark.connect()
-    //Spark.query1()
-    Spark.query6()
+    mainStartUpMenu()
+    //Spark.query5()
 
-
-
-
-
+//    val fname = "Oscar"
+//    val lname = "Garcia"
+//    currentUser = "ogarcia2834"
+//    mysqlDatabase.updateName(fname,lname,currentUser)
 
   }
 
@@ -81,11 +28,13 @@ object Main {
   @tailrec
   def mainStartUpMenu(): Unit = {
 
+    println("\u001B[35m--------Main Menu Log in--------\u001B[0m")
     println {
-      "Option 1: Login as an existing User\n" +
-        "Option 2: Create New Account  \n" +
-        "Option 3: Exit the app "
+      "\u001B[32mOption 1:\u001B[34m Login as an existing User\n" +
+        "\u001B[32mOption 2:\u001B[34m Create New Account  \n" +
+        "\u001B[32mOption 3:\u001B[34m Exit the app "
     }
+    print("\u001B[32mInput option -> \u001B[0m")
     val option = scala.io.StdIn.readLine()
     option match {
       case "1" => login()
@@ -98,6 +47,7 @@ object Main {
     mysqlDatabase.disDB()
     Spark.close()
     exit(0)
+
   }
 
 
@@ -135,17 +85,17 @@ object Main {
   @tailrec
   def login(): Unit = {
     println("Please input user info")
-    println("Please enter username")
+    print("Please enter username: ")
     currentUser = scala.io.StdIn.readLine()
-    println("Please enter password")
+    print("Please enter password: ")
     val password = scala.io.StdIn.readLine()
 
     val validLogin = mysqlDatabase.validateLogin(currentUser, password)
 
-    println(validLogin)
+    //println(validLogin)
 
     if(validLogin){
-      println("correct input going to user menu")
+      println("\u001B[33mcorrect input going to user menu\u001B[0m")
       val admin = mysqlDatabase.validateAdmin(currentUser)
 
       if (admin){adminMenu()}
@@ -160,19 +110,23 @@ object Main {
 
 
   def adminMenu(): Unit = {
-    println("YOu have arrived at the Admin menu, Admin, welcome master")
-    println("Please select an option 1-8")
+    println("\u001B[35m--------Admin menu--------\u001B[0m")
+    println("\u001B[32mPlease select an option 1-8")
+    print("Welcome -> ")
+    mysqlDatabase.showUser(currentUser)
+    println("\nUser: "+currentUser)
     println {
-      "Option 1: Make a new Admin\n" +
-        "Option 2: Change Username\n" +
-        "Option 3: Change Name\n" +
-        "Option 4: Change Password\n" +
-        "Option 5: Go to data \n" +
-        "Option 6: Logout\n" +
-        "Option 7: Delete Account\n +" +
-        "Option 8: exit app"
+      "Option 1: \u001B[34mMake a new Admin\n" +
+        "\u001B[32mOption 2: \u001B[34mChange Username\n" +
+        "\u001B[32mOption 3: \u001B[34mChange Name\n" +
+        "\u001B[32mOption 4: \u001B[34mChange Password\n" +
+        "\u001B[32mOption 5: \u001B[34mGo to data \n" +
+        "\u001B[32mOption 6: \u001B[34mLogout\n" +
+        "\u001B[32mOption 7: \u001B[34mDelete Account\n" +
+        "\u001B[32mOption 8: \u001B[34mexit app\u001B[0m"
     }
 
+    print("\u001B[32mInput option -> \u001B[0m")
     val option = scala.io.StdIn.readLine()
     option match {
       case "1" => upAdmin()
@@ -191,18 +145,22 @@ object Main {
 
 
   def userMenu(): Unit = {
-    println("Regular User Menu ")
-    println("Please select an option 1-7")
+    println("\u001B[35m---Regular User Menu---\u001B[0m")
+    println("\u001B[32mPlease select an option 1-7\u001B[0m")
+    print("Welcome -> ")
+    mysqlDatabase.showUser(currentUser)
+    println("\nUser: "+currentUser)
     println {
-        "Option 1: Change Username\n" +
-        "Option 2: Change Name\n" +
-        "Option 3: Change Password\n" +
-        "Option 4: Go to data \n" +
-        "Option 5: Logout\n" +
-        "Option 6: Delete Account\n" +
-        "Option 7: exit app"
+        "\u001B[32mOption 1:\u001B[34m Change Username\n" +
+        "\u001B[32mOption 2:\u001B[34m Change Name\n" +
+        "\u001B[32mOption 3:\u001B[34m Change Password\n" +
+        "\u001B[32mOption 4:\u001B[34m Go to data \n" +
+        "\u001B[32mOption 5:\u001B[34m Logout\n" +
+        "\u001B[32mOption 6:\u001B[34m Delete Account\n" +
+        "\u001B[32mOption 7:\u001B[34m exit app\u001B[0m"
     }
 
+    print("\u001B[32mInput option -> \u001B[0m")
     val option = scala.io.StdIn.readLine()
     option match {
       case "1" => changeUsername()
@@ -220,15 +178,17 @@ object Main {
 
 
 
-  @tailrec
   def dataChoiceAdmin(): Unit = {
-    println("Choice 1: ")
-    println("Choice 2: ")
-    println("Choice 3: ")
-    println("Choice 4: ")
-    println("Choice 5: ")
-    println("Choice 6: ")
+    println("-------------------------------Queries-------------------------------")
+    println("Choice 1: Given a random user given state, display all criteria of deceased")
+    println("Choice 2: Show the Top States with Covid Deaths")
+    println("Choice 3: Display the total covid-19 deaths by Age Group with user input Sex 3that has been recorded")
+    println("Choice 4: See Death toll by month since the beginning of the pandemic to current")
+    println("Choice 5: What is the total death not retaining to covid-19 by state and up to current")
+    println("Choice 6: What is the latest Data depending on choice of State")
     println("Choice 7: Go Back ")
+
+    print("\u001B[32mInput option -> \u001B[0m")
     var choiceQuery = scala.io.StdIn.readLine()
     choiceQuery match {
       case "1" => Spark.query1()
@@ -240,30 +200,27 @@ object Main {
       case "7" => goBack()
       case _ =>  dataChoiceAdmin()
     }
+    dataChoiceAdmin()
   }
 
 
   def dataChoiceRegular():Unit = {
-    println("Choice 1: ")
-    println("Choice 2: ")
-    println("Choice 3: ")
-    println("Choice 4: ")
-    println("Choice 5: ")
-    println("Choice 6: ")
-    println("Choice 7: Go Back ")
+    println("-------------------------------Queries-------------------------------")
+    println("Choice 1: See Death toll by month since the beginning of the pandemic to current")
+    println("Choice 2: What is the total death not retaining to covid-19 by state and up to current")
+    println("Choice 3: What is the latest Data depending on choice of State")
+    println("Choice 4: Go Back ")
+
+    print("\u001B[32mInput option -> \u001B[0m")
     var choiceQuery = scala.io.StdIn.readLine()
     choiceQuery match {
-      case "1" => Spark.query1()
-      case "2" => Spark.query2()
-      case "3" => Spark.query3()
-      case "4" => Spark.query4()
-      case "5" => Spark.query5()
-      case "6" => Spark.query6()
-      case "7" => goBack()
-      case _ =>  dataChoiceAdmin()
+      case "1" => Spark.query4()
+      case "2" => Spark.query5()
+      case "3" => Spark.query6()
+      case "4" => goBack()
+      case _ =>  dataChoiceRegular()
     }
-
-
+    dataChoiceRegular()
   }
 
 
@@ -284,34 +241,38 @@ object Main {
     println("Other Users")
     Spark.showNonAdmins()
     do {
-      println("Please enter username of user to elevate to admin")
+      print("Please enter username of user to elevate to admin: ")
       otherUser = scala.io.StdIn.readLine()
       bool = mysqlDatabase.checkifExists(otherUser)
     }while(!bool)
 
     mysqlDatabase.elevate2Admin(otherUser)
-    println("user is now admin")
+    println("User is now admin")
+    println("Current Admins")
+    Spark.showAdmins()
   }
 
   def changeUsername(): Unit = {
-    println("Changing your current username => ")
+    print("Changing your current username => ")
     mysqlDatabase.showUsername(currentUser)
     do {
-      println("Please enter in your new username")
+      print("Please enter in your new username(One that does not exist): ")
       otherUser = scala.io.StdIn.readLine()
       bool = mysqlDatabase.checkifExists(otherUser)
     }while(bool)
+    println(bool)
 
     mysqlDatabase.updateUsername(currentUser,otherUser)
+    currentUser=otherUser
   }
 
   def changeName(): Unit = {
-    println("Current Name -> ")
+    print("Current Name -> ")
     mysqlDatabase.showUser(currentUser)
-    println("Input New First Name")
+    print("\nInput New First Name: ")
     val fname = scala.io.StdIn.readLine()
 
-    println("Input New Last Name")
+    print("Input New Last Name: ")
     val lname = scala.io.StdIn.readLine()
 
     mysqlDatabase.updateName(fname,lname,currentUser)
@@ -323,12 +284,12 @@ object Main {
     print("Changing password for current username => ")
     mysqlDatabase.showUsername(currentUser)
     do {
-      println("Please enter your old password")
+      print("Please enter your old password: ")
       otherUser = scala.io.StdIn.readLine()
       bool = mysqlDatabase.validateLogin(currentUser,otherUser)
     }while(!bool)
 
-    println("Enter new password")
+    print("Enter new password: ")
     val pass = scala.io.StdIn.readLine()
 
     mysqlDatabase.updatePassword(currentUser,pass)
@@ -345,7 +306,7 @@ object Main {
     println("Are you sure about this")
     val listr = List("y","n")
     do {
-      println("Enter y/n -> ")
+      print("Enter y/n -> ")
       val input = scala.io.StdIn.readLine().toLowerCase()
       bool = listr.contains(input)
       if ('y' == input){

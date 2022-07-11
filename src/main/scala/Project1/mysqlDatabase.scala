@@ -1,13 +1,7 @@
 package Project1
 
-import org.apache.log4j.{Level, Logger}
-import org.apache.spark.sql.SparkSession
-
 import java.sql.{Connection, DriverManager, SQLException}
 import scala.collection.mutable.ListBuffer
-
-
-
 object mysqlDatabase {
 
 
@@ -61,20 +55,6 @@ object mysqlDatabase {
     }
   }
 
-//  def showAllUsers(): Unit = {///spark
-//    connect()
-//    val statement = connection.prepareStatement("SELECT  Firstname, Lastname, Username FROM users")
-//    try {
-//      val resultSet = statement.executeQuery()
-//      println("Users")
-//      while (resultSet.next()) {
-//        println(resultSet.getString("USERNAME"))
-//      }
-//    } catch {
-//      case e: Exception => e.printStackTrace()
-//    }
-//  }
-
   def showUser(Username: String): Unit = {
     connect()
     val statement = connection.prepareStatement(s"SELECT Firstname, Lastname FROM users WHERE Username = '$Username' ")
@@ -83,7 +63,7 @@ object mysqlDatabase {
 
       while (resultSet.next()) {
         print(resultSet.getString("Firstname"))
-        print(' ')
+        print(" ")
         print(resultSet.getString("Lastname"))
       }
     } catch {
@@ -120,7 +100,7 @@ object mysqlDatabase {
       bufferL += resultSet.getString("Username")
     }
     val userList = bufferL.toList
-    val check = (userList.contains(userCheck))
+    val check = userList.contains(userCheck)
     if (check) {//user is detected
       true
     } else {//User is not detected
@@ -135,33 +115,25 @@ object mysqlDatabase {
 
   def updateUsername(oldusername:String, NewUserName: String): Unit = {
     connect()
-    val statement = connection.prepareStatement(s"UPDATE users SET Username = '$NewUserName' WHERE Username = $oldusername")
-
+    val statement = connection.createStatement()
     try {
-      val resultSet = statement.executeQuery()
-      println("Users")
-      while (resultSet.next()) {
-        println(resultSet.getString("USERNAME"))
-      }
+      statement.executeUpdate(s"UPDATE users SET Username = '$NewUserName' WHERE Username = '$oldusername'")
     } catch {
       case e: Exception => e.printStackTrace()
     }
-
+    println("Username has been updated")
   }
 
   def updatePassword(username:String, password: String): Unit = {
     connect()
-    val statement = connection.prepareStatement(s"UPDATE users SET password = '$password' WHERE Username = $username")
+    val statement = connection.createStatement()
 
     try {
-      val resultSet = statement.executeQuery()
-      println("Users")
-      while (resultSet.next()) {
-        println(resultSet.getString("USERNAME"))
-      }
+      statement.executeUpdate(s"UPDATE users SET password = '$password' WHERE Username = '$username'")
     } catch {
       case e: Exception => e.printStackTrace()
     }
+    println("Username has been updated")
 
   }
 
@@ -169,15 +141,11 @@ object mysqlDatabase {
 
   def updateName(newFirstName: String, newLastName: String,existingUser : String): Unit = {
     connect()
-    val statement = connection.prepareStatement(s"UPDATE users SET Firstname = '$newFirstName' AND Lastname = '$newLastName'  WHERE Username = $existingUser")
-
+    val statement = connection.createStatement()
     try {
-      val resultSet = statement.executeQuery()
-      println("Users")
-      while (resultSet.next()) {
-        println(resultSet.getString("USERNAME"))
-      }
-    } catch {
+      statement.executeUpdate(s"UPDATE users SET Firstname = '$newFirstName', Lastname = '$newLastName'  WHERE Username = '$existingUser'")
+    }
+    catch {
       case e: Exception => e.printStackTrace()
     }
   }
@@ -212,12 +180,12 @@ object mysqlDatabase {
     try {
       if (!validUsername.next()) {
         println("Username and Password are incorrect")
-        print("")
+        //print("")
         false
 
       } else {
         println("Username and Password are correct.")
-        print("")
+        //print("")
         true
       }
     }
@@ -234,12 +202,6 @@ object mysqlDatabase {
       else {true}
     }
   }
-
-
-
-//  def checkIsAdmin(usersUserName: String): Int = {
-//
-//  }
 
 
 

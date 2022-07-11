@@ -7,7 +7,7 @@ object Spark {
   private var bool : Boolean = false
   private var spark: SparkSession = _
   private var userDf: DataFrame = _
-  private var dataDf: DataFrame = _
+  private var df: DataFrame = _
   def connect(): Unit = {
     System.setProperty("hadoop.home.dir", "C:\\hadoop3")
     spark = SparkSession
@@ -16,13 +16,24 @@ object Spark {
       .config("spark.master", "local[*]")
       .enableHiveSupport()
       .getOrCreate()
-    println("created spark session")
+    println("created spark session\n")
 
     spark.sparkContext.setLogLevel("ERROR")
     spark.sql("Set hive.exec.dynamic.partition.mode=nonstrict")
 
     //dataDf = spark.read.option("delimiter", ",").option("inferSchema","true").option("header", "true").csv(path = "C:\\input\\tmp.csv")
-    val df = spark.read.option("delimiter", ",").option("inferSchema","true").option("header", "true").csv(path = "C:\\input\\tmp.csv")
+
+
+
+    try{
+      df = spark.read.option("delimiter", ",").option("inferSchema","true").option("header", "true").csv("hdfs://localhost:9000/user/ogarcia2834/project1/covidData.csv")
+    }
+    catch {
+      case e: Exception => e.printStackTrace()
+        println("Something went wrong, check Hadoop")
+    }
+
+    //val df = spark.read.option("delimiter", ",").option("inferSchema","true").option("header", "true").csv(path = "C:\\input\\tmp.csv")
 
     df.createOrReplaceTempView("Main")
     //spark.sql("SELECT * FROM Main").show()
@@ -62,8 +73,11 @@ object Spark {
     spark.sql("create table Query6(`Start Date` String,`End Date` String,Year Int,Month Int,State String,Sex String,`Age Group` String,`COVID-19 Deaths` Int,`Pneumonia Deaths` Int,`Influenza Deaths` Int, `Pneumonia Int/Influenza/COVID-19 Deaths` Int,`Other Causes of Death` Int,`Total Deaths` Int) row format delimited fields terminated by ',' stored as textfile")
     spark.sql("INSERT INTO TABLE Query6(SELECT `Start Date`,`End Date`,Year,Month,State,Sex,`Age Group`,`COVID-19 Deaths`,`Pneumonia Deaths`,`Influenza Deaths`, `Pneumonia, Influenza, or COVID-19 Deaths`,`Total Deaths`-`Pneumonia, Influenza, or COVID-19 Deaths` ,`Total Deaths` FROM Main " +
       "WHERE Sex = 'All Sexes' AND Group = 'By Month' AND Year = '2022' AND `Age Group` = 'All Ages' Order BY Month DESC)")
-    //spark.sql("Select * From Query6").show(50)
+    val d6 = spark.sql("Select * From Query6")
+
+
   }
+
 
   def close():Unit = {
     spark.close()
@@ -96,6 +110,13 @@ object Spark {
     updateTable()
     userDf.createOrReplaceTempView("usersView")
     val newTable = spark.sql("SELECT Firstname, Lastname, Username FROM usersView WHERE AdminPriv = 1")
+    newTable.show()
+  }
+
+  def showAll():Unit = {
+    updateTable()
+    userDf.createOrReplaceTempView("usersView")
+    val newTable = spark.sql("SELECT Firstname, Lastname, Username FROM usersView")
     newTable.show()
   }
 
