@@ -23,12 +23,6 @@ object mysqlDatabase {
         println("something is wrong")
     }
 
-
-
-
-
-//
-
   }
 
 
