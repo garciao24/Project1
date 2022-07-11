@@ -96,7 +96,7 @@ object Main {
 
     if(validLogin){
       println("\u001B[33mcorrect input going to user menu\u001B[0m")
-      val admin = mysqlDatabase.validateAdmin(currentUser)
+      admin = mysqlDatabase.validateAdmin(currentUser)
 
       if (admin){adminMenu()}
       else {userMenu()}
@@ -189,7 +189,7 @@ object Main {
     println("Choice 7: Go Back ")
 
     print("\u001B[32mInput option -> \u001B[0m")
-    var choiceQuery = scala.io.StdIn.readLine()
+    val choiceQuery = scala.io.StdIn.readLine()
     choiceQuery match {
       case "1" => Spark.query1()
       case "2" => Spark.query2()
@@ -212,7 +212,7 @@ object Main {
     println("Choice 4: Go Back ")
 
     print("\u001B[32mInput option -> \u001B[0m")
-    var choiceQuery = scala.io.StdIn.readLine()
+    val choiceQuery = scala.io.StdIn.readLine()
     choiceQuery match {
       case "1" => Spark.query4()
       case "2" => Spark.query5()
@@ -298,6 +298,7 @@ object Main {
   def logout(): Unit = {
     currentUser = ""
     otherUser = ""
+    admin = false
     mainStartUpMenu()
   }
 
