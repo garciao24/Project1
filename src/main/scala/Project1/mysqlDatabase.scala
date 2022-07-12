@@ -149,10 +149,6 @@ object mysqlDatabase {
     val statement = connection.createStatement()
     val rsSet = statement.executeUpdate(s"UPDATE users SET AdminPriv = 1 where username = '$selectedUser'")
 
-
-
-
-
   }
 
   def deleteUser(delUser: String): Unit = {

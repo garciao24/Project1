@@ -166,12 +166,11 @@ object Main {
 
 
 
-
   def dataChoiceAdmin(): Unit = {
     println("-------------------------------Queries-------------------------------")
     println("Choice 1: Given a random user given state, display all criteria of deceased")
     println("Choice 2: Show the Top States with Covid Deaths")
-    println("Choice 3: Display the total covid-19 deaths by Age Group with user input Sex 3that has been recorded")
+    println("Choice 3: Display the total covid-19 deaths by Age Group, with user input Sex, that has been recorded")
     println("Choice 4: See Death toll by month since the beginning of the pandemic to current")
     println("Choice 5: What is the total death not retaining to covid-19 by state and up to current")
     println("Choice 6: What is the latest Data depending on choice of State")
