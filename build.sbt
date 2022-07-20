@@ -27,3 +27,6 @@ libraryDependencies ++= Seq(
 libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
 libraryDependencies += "com.typesafe" % "config" % "1.4.2"
 
+libraryDependencies += "org.apache.logging.log4j" % "log4j-api" % "2.17.2"
+libraryDependencies += "org.apache.logging.log4j" % "log4j-core" % "2.17.2"
+libraryDependencies += "org.apache.logging.log4j" %% "log4j-api-scala" % "12.0"
